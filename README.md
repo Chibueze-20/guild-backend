@@ -1,2 +1,2 @@
 # guild-backend
-Backend repository for The Guild project, an Anime inspired project
+Node.js backend implementation of The Guild, a Social community application for Anime 

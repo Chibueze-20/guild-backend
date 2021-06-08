@@ -1,0 +1,27 @@
+{
+  "name": "guild-backend-node",
+  "version": "1.0.0",
+  "description": "Backend repository for The Guild project, an Anime inspired project",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app"
+  },
+  "keywords": [
+    "nodejs",
+    "guild-backend",
+    "guild-node"
+  ],
+  "author": "Okedele",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.12.10",
+    "uuid": "^8.3.2",
+    "validator": "^13.6.0"
+  }
+}
