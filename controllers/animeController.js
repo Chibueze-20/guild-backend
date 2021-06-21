@@ -1,4 +1,7 @@
 const axios = require('axios');
+const Cloudinary = require('../Services/Cloudinary');
+const AnimePicture = require('../models/AnimePicture');
+const fs = require('fs')
 require('dotenv').config();
 
 module.exports.season_anime = async (req, res) => {
@@ -31,6 +34,40 @@ module.exports.season_anime = async (req, res) => {
             message: `The  previous season for year ${year} is ${previous_season}`,
             data: anime_data
         });
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            message: 'There was a problem, please try again later.'
+        });
+    }
+}
+
+module.exports.upload = async (req, res) => {
+    const { type, season } = req.body;
+    try {
+        let pic_check = await AnimePicture.findOne({ type: type, season: season });
+        if (pic_check) {
+            const cloudinary_response = await Cloudinary.upload(req.files.anime_pic);
+            fs.unlinkSync(req.files.anime_pic.tempFilePath);
+            pic_check.image_url = cloudinary_response.url;
+            await pic_check.save()
+            pic_check = pic_check.toJSON();
+            delete pic_check.__v;
+            return res.status(200).send({
+                message: { success: 'Anime picture uploaded successfully' },
+                data: pic_check
+            })
+        } else {
+            const cloudinary_response = await Cloudinary.upload(req.files.anime_pic);
+            fs.unlinkSync(req.files.anime_pic.tempFilePath);
+            let anime_pic = await AnimePicture.create({ type: type, season: season, image_url: cloudinary_response.url });
+            anime_pic = anime_pic.toJSON();
+            delete anime_pic.__v;
+            return res.status(201).send({
+                message: { success: 'Anime picture uploaded successfully' },
+                data: anime_pic
+            });
+        }
     } catch (err) {
         return res.status(500).json({
             status: 'error',

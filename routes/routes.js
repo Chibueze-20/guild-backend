@@ -28,5 +28,6 @@ router.delete('/user/:id', requireAuth, userController.destroy);
 */
 
 router.get('/anime', requireAuth, animeController.season_anime);
+router.post('/anime/picture/upload', requireAuth, animeController.upload);
 
 module.exports = router;
