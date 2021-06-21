@@ -47,12 +47,15 @@ module.exports.upload = async (req, res) => {
     try {
         let pic_check = await AnimePicture.findOne({ type: type, season: season });
         if (pic_check) {
+            await Cloudinary.destroy(pic_check.public_id);
             const cloudinary_response = await Cloudinary.upload(req.files.anime_pic);
             fs.unlinkSync(req.files.anime_pic.tempFilePath);
             pic_check.image_url = cloudinary_response.url;
+            pic_check.public_id = cloudinary_response.public_id;
             await pic_check.save()
             pic_check = pic_check.toJSON();
             delete pic_check.__v;
+            delete pic_check.public_id;
             return res.status(200).send({
                 message: { success: 'Anime picture uploaded successfully' },
                 data: pic_check
@@ -60,9 +63,10 @@ module.exports.upload = async (req, res) => {
         } else {
             const cloudinary_response = await Cloudinary.upload(req.files.anime_pic);
             fs.unlinkSync(req.files.anime_pic.tempFilePath);
-            let anime_pic = await AnimePicture.create({ type: type, season: season, image_url: cloudinary_response.url });
+            let anime_pic = await AnimePicture.create({ type: type, season: season, image_url: cloudinary_response.url, public_id: cloudinary_response.public_id });
             anime_pic = anime_pic.toJSON();
             delete anime_pic.__v;
+            delete anime_pic.public_id;
             return res.status(201).send({
                 message: { success: 'Anime picture uploaded successfully' },
                 data: anime_pic

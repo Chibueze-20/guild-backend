@@ -13,6 +13,9 @@ const AnimePictureSchema = new mongoose.Schema({
     image_url: {
         type: String,
     },
+    public_id: {
+        type: String,
+    },
     is_deleted: {
         type: Boolean,
         default: false

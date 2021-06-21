@@ -3,24 +3,35 @@ require('dotenv').config();
 
 cloudinary.config({
 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 })
 
 module.exports = {
 
-  upload: async (file) => {
+    upload: async (file) => {
 
-      try {
+        try {
 
-        let response = await cloudinary.v2.uploader.upload(file.tempFilePath, { folder: 'Guild', uploadPreset: 'guild_app', resource_type: "auto", overwrite: true, use_filename: true, unique_filename: false  })
+            let response = await cloudinary.v2.uploader.upload(file.tempFilePath, { folder: 'Guild', uploadPreset: 'guild_app', resource_type: "auto", overwrite: true, use_filename: true, unique_filename: false })
 
-        return({ status: true, url: response.secure_url })
+            return ({ status: true, url: response.secure_url, public_id: response.public_id })
 
-      } catch (error) {
+        } catch (error) {
 
-        return({ status: false, url: error.message })
-      }
-  }
+            return ({ status: false, url: error.message })
+        }
+    },
+
+    destroy: async (url) => {
+        try {
+
+            await cloudinary.v2.uploader.destroy(url)
+
+        } catch (error) {
+
+            return ({ status: 'error' });
+        }
+    }
 }
