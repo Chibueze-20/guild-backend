@@ -75,3 +75,28 @@ module.exports.upload = async (req, res) => {
         });
     }
 }
+
+module.exports.fetch_picture = async (req, res) => {
+    const { type, season } = req.params;
+    try {
+        let anime_pic = await AnimePicture.findOne({ type: type, season: season });
+        if (!anime_pic) {
+            return res.status(404).send({
+                status: 'error',
+                message: `Anime picture of type ${type} for ${season} season not found.`
+            });
+        } else {
+            anime_pic = anime_pic.toJSON();
+            delete anime_pic.__v;
+            return res.status(200).send({
+                message: { success: 'Anime picture retrieved successfully' },
+                data: anime_pic
+            })
+        }
+    } catch (err) {
+        return res.status(500).json({
+            status: 'error',
+            message: 'There was a problem, please try again later.'
+        })
+    }
+}
