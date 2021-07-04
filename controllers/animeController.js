@@ -28,7 +28,7 @@ module.exports.season_anime = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: "error",
-      message: "There was a problem, please try again later.",
+      message: err.message,
     });
   }
 };
@@ -71,7 +71,7 @@ module.exports.upload = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: "error",
-      message: "There was a problem, please try again later.",
+      message: err.message,
     });
   }
 };
@@ -96,7 +96,7 @@ module.exports.fetch_picture = async (req, res) => {
   } catch (err) {
     return res.status(500).json({
       status: "error",
-      message: "There was a problem, please try again later.",
+      message: err.message,
     });
   }
 };
@@ -118,7 +118,7 @@ module.exports.vote = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: "There was a problem, please try again later.",
+      message: error.message,
     });
   }
 };
@@ -138,7 +138,7 @@ module.exports.get_votes = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       status: "error",
-      message: "There was a problem, please try again later.",
+      message: error.message,
     });
   }
 };
