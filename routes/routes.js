@@ -31,5 +31,6 @@ router.get('/anime', requireAuth, animeController.season_anime);
 router.post('/anime/picture/upload', requireAuth, animeController.upload);
 router.get('/anime/picture/:type/:season', requireAuth, animeController.fetch_picture);
 router.post('/anime/vote/:season/:year', requireAuth, animeController.vote);
+router.get('/anime/votes', requireAuth, animeController.get_votes);
 
 module.exports = router;

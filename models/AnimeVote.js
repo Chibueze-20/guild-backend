@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const AnimeVoteSchema = new mongoose.Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: "User"
+        ref: "user"
     },
     votes: {
         type: [],

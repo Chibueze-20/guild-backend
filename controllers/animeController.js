@@ -125,7 +125,23 @@ module.exports.vote = async (req, res) => {
     const anime_vote = await AnimeVote.create(voteData);
     return res.status(201).send({
       message: { success: `User has voted successfully for ${season} ${year}` },
-      data: { anime_vote },
+      data: anime_vote,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "There was a problem, please try again later.",
+    });
+  }
+};
+
+// function to get votes. Logic for processing of votes to be added
+module.exports.get_votes = async (req, res) => {
+  try {
+    const votes = await AnimeVote.find({ is_deleted: false }).populate("user", ['_id', 'username', 'email']);
+    return res.status(200).send({
+      message: { success: `Anime votes retrieved successfully` },
+      data: votes,
     });
   } catch (error) {
     return res.status(500).json({
