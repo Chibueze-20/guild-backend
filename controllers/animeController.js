@@ -6,22 +6,10 @@ const AnimeVote = require("../models/AnimeVote");
 require("dotenv").config();
 
 module.exports.season_anime = async (req, res) => {
-  const now = new Date();
-  let month = now.getMonth() + 1;
-  const year = now.getFullYear();
-  let previous_season;
-  if (month >= 1 && month < 4) {
-    previous_season = "fall";
-  } else if (month >= 4 && month < 7) {
-    previous_season = "winter";
-  } else if (month >= 7 && month < 10) {
-    previous_season = "spring";
-  } else if (month >= 10 && month <= 12) {
-    previous_season = "summer";
-  }
+  const { season, year } = req;
   try {
     const season_anime = await axios.get(
-      `${process.env.JINKAN_URL}${year}/${previous_season}`
+      `${process.env.JINKAN_URL}${year}/${season}`
     );
     const season_anime_data = season_anime.data.anime;
     let anime_data = [];
@@ -34,7 +22,7 @@ module.exports.season_anime = async (req, res) => {
       anime_data.push(anime_item);
     }
     return res.status(200).send({
-      message: `The  previous season for year ${year} is ${previous_season}`,
+      message: `The  previous season for year ${year} is ${season}`,
       data: anime_data,
     });
   } catch (err) {
@@ -114,7 +102,7 @@ module.exports.fetch_picture = async (req, res) => {
 };
 
 module.exports.vote = async (req, res) => {
-  const { season, year } = req.params;
+  const { season, year } = req;
   const voteData = {
     user: req.jwt.id,
     votes: req.body.votes,
@@ -138,7 +126,11 @@ module.exports.vote = async (req, res) => {
 // function to get votes. Logic for processing of votes to be added
 module.exports.get_votes = async (req, res) => {
   try {
-    const votes = await AnimeVote.find({ is_deleted: false }).populate("user", ['_id', 'username', 'email']);
+    const votes = await AnimeVote.find({ is_deleted: false }).populate("user", [
+      "_id",
+      "username",
+      "email",
+    ]);
     return res.status(200).send({
       message: { success: `Anime votes retrieved successfully` },
       data: votes,
