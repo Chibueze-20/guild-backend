@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
+const cors = require('cors');
 require('dotenv').config();
 const routes = require('./routes/routes')
 
@@ -17,6 +18,9 @@ app.use(fileUpload({
 
 // // parse requests of content-type - application/json
 app.use(express.json())
+
+//use cors
+app.use(cors());
 
 // database connection
 const dbURI = process.env.dbURI;
