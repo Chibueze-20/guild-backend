@@ -14,12 +14,14 @@ module.exports.season_anime = async (req, res) => {
     const season_anime_data = season_anime.data.anime;
     let anime_data = [];
     for (const anime of season_anime_data) {
-      const anime_item = {
-        title: anime.title,
-        image_url: anime.image_url,
-        synopsis: anime.synopsis,
-      };
-      anime_data.push(anime_item);
+      if (anime.type != "Movie" && anime.type != "Special" && anime.type != "OVA" && anime.r18 == false && anime.kids == false && anime.continuing == false) {
+        const anime_item = {
+          title: anime.title,
+          image_url: anime.image_url,
+          synopsis: anime.synopsis,
+        };
+        anime_data.push(anime_item);
+      }
     }
     return res.status(200).send({
       message: `The  previous season for year ${year} is ${season}`,
