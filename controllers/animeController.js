@@ -9,7 +9,7 @@ module.exports.season_anime = async (req, res) => {
   const { season, year } = req;
   try {
     const season_anime = await axios.get(
-      `${process.env.JINKAN_URL}${year}/${season}`
+      `${process.env.JINKAN_URL}/season/${year}/${season}`
     );
     const season_anime_data = season_anime.data.anime;
     let anime_data = [];
@@ -24,7 +24,7 @@ module.exports.season_anime = async (req, res) => {
       }
     }
     return res.status(200).send({
-      message: `The  previous season for year ${year} is ${season}`,
+      message: `The  current season for year ${year} is ${season}`,
       data: anime_data,
     });
   } catch (err) {

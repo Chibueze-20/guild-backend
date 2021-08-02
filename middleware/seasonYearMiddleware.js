@@ -4,18 +4,17 @@ const seasonYear = async (req, res, next) => {
   const now = new Date();
   let month = now.getMonth() + 1;
   let year = now.getFullYear();
-  let previous_season;
+  let season;
   if (month >= 1 && month < 4) {
-    previous_season = "fall";
-    year = year - 1;
+    season = "winter";
   } else if (month >= 4 && month < 7) {
-    previous_season = "winter";
+    season = "spring";
   } else if (month >= 7 && month < 10) {
-    previous_season = "spring";
+    season = "summer";
   } else if (month >= 10 && month <= 12) {
-    previous_season = "summer";
+    season = "fall";
   }
-  req.season = previous_season;
+  req.season = season;
   req.year = year;
   next();
 };
