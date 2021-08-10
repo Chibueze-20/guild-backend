@@ -13,6 +13,10 @@ router.post("/log-in", authController.login);
 
 router.post("/log-out", requireAuth, authController.logout);
 
+router.post("/password-reset", authController.send_reset_link);
+
+router.post("/password/reset", authController.reset_password);
+
 /*
  * UserController routes
  */

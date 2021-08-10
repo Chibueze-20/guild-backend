@@ -14,7 +14,14 @@ module.exports.season_anime = async (req, res) => {
     const season_anime_data = season_anime.data.anime;
     let anime_data = [];
     for (const anime of season_anime_data) {
-      if (anime.type != "Movie" && anime.type != "Special" && anime.type != "OVA" && anime.r18 == false && anime.kids == false && anime.continuing == false) {
+      if (
+        anime.type != "Movie" &&
+        anime.type != "Special" &&
+        anime.type != "OVA" &&
+        anime.r18 == false &&
+        anime.kids == false &&
+        anime.continuing == false
+      ) {
         const anime_item = {
           title: anime.title,
           image_url: anime.image_url,
