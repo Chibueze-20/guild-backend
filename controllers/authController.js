@@ -116,7 +116,7 @@ module.exports.send_reset_link = async (req, res) => {
       },
     });
     let mailOptions = {
-      from: "okedelep@gmail.com",
+      from: "crunch.guild@gmail.com",
       to: `${user.email}`,
       subject: "Password Reset",
       html: `<p>Kindly visit <a href="${url}/auth/password-reset/${token}">${url}/auth/password-reset/${token}</a> to reset your password. Please note that the link will expire in 10 minutes</p>`,
