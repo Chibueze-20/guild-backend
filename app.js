@@ -4,6 +4,7 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 require('dotenv').config();
 const routes = require('./routes/routes')
+const AggregateVote = require('./Tasks/AggregateVote')
 
 // create express app
 const app = express();
@@ -21,6 +22,10 @@ app.use(express.json())
 
 //use cors
 app.use(cors());
+
+// Start task to be run on the server.
+AggregateVote.start();
+
 
 // database connection
 const dbURI = process.env.dbURI;
