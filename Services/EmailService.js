@@ -22,7 +22,7 @@ const EmailService = async (emailTemplate, data) => {
   const htmlToSend = template(data);
   await transporter.sendMail({
     from: `Crunch Guild <crunch.guild@gmail.com>`,
-    to: "okedelep@gmail.com",
+    to: data.email,
     subject: data.subject,
     html: htmlToSend,
   });
