@@ -4,8 +4,8 @@ const PasswordReset = require("../models/PasswordReset");
 const jwt = require("jsonwebtoken");
 const randomString = require("randomstring");
 const { differenceInMinutes } = require("date-fns");
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+const EmailService = require('../Services/EmailService');
 
 //handle errors
 const handleErrors = (err) => {
@@ -104,24 +104,13 @@ module.exports.send_reset_link = async (req, res) => {
     }
     await PasswordReset.findOneAndUpdate({ email: email, is_deleted: false }, { is_deleted: true });
     const { token } = await PasswordReset.create({ email: user.email, token: randomString.generate(40), date_created: new Date() });
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        type: 'OAuth2',
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-        clientId: process.env.OAUTH_CLIENTID,
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN
-      },
-    });
-    let mailOptions = {
-      from: "crunch.guild@gmail.com",
-      to: `${user.email}`,
+    const data = {
+      email: user.email,
       subject: "Password Reset",
-      html: `<p>Kindly visit <a href="${url}/auth/password-reset/${token}">${url}/auth/password-reset/${token}</a> to reset your password. Please note that the link will expire in 10 minutes</p>`,
-    };
-    await transporter.sendMail(mailOptions);
+      url: url,
+      token: token
+    }
+    await EmailService("reset-password", data)
     res.status(200).send({
       status: "success",
       message: "Password reset email sent successfully",
@@ -163,7 +152,6 @@ module.exports.reset_password = async (req, res) => {
       message: "User password reset successfully",
     });
   } catch (err) {
-    console.log(err)
     res.status(500).json({
       status: "error",
       message: "There was a problem, please try again later.",
