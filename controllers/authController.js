@@ -12,12 +12,8 @@ const handleErrors = (err) => {
   let errors = {};
 
   //login errors
-  if (err.message === "Incorrect email") {
-    errors.email = "Incorrect email";
-    return errors;
-  }
-  if (err.message === "Incorrect password") {
-    errors.email = "Incorrect password";
+  if (err.message === "Incorrect email" || err.message === "Incorrect password") {
+    errors = "Incorrect email or password";
     return errors;
   }
 
