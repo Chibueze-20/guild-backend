@@ -101,7 +101,7 @@ module.exports.send_reset_link = async (req, res) => {
     await PasswordReset.findOneAndUpdate({ email: email, is_deleted: false }, { is_deleted: true });
     const { token } = await PasswordReset.create({ email: user.email, token: randomString.generate(40), date_created: new Date() });
     const data = {
-      email: 'okedelep@gmail.com',
+      email: user.email,
       subject: "Password Reset",
       url: url,
       token: token
